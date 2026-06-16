@@ -32,35 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const users_1 = __importDefault(require("./routes/users"));
-const teams_1 = __importDefault(require("./routes/teams"));
-const activities_1 = __importDefault(require("./routes/activities"));
-const leaderboard_1 = __importDefault(require("./routes/leaderboard"));
-const workouts_1 = __importDefault(require("./routes/workouts"));
-const database_1 = __importStar(require("./config/database"));
-const app = (0, express_1.default)();
-const port = Number(process.env.PORT ?? 8000);
-app.use(express_1.default.json());
-app.use('/api/users', users_1.default);
-app.use('/api/teams', teams_1.default);
-app.use('/api/activities', activities_1.default);
-app.use('/api/leaderboard', leaderboard_1.default);
-app.use('/api/workouts', workouts_1.default);
-app.get('/', (req, res) => {
-    res.json({ message: 'OctoFit Tracker backend is running.', apiBaseUrl: `${database_1.baseUrl}/api` });
+const mongoose_1 = __importStar(require("mongoose"));
+const leaderboardSchema = new mongoose_1.Schema({
+    userId: { type: String, required: true },
+    totalCalories: { type: Number, required: true, default: 0 },
+    totalDuration: { type: Number, required: true, default: 0 },
+    activityCount: { type: Number, required: true, default: 0 }
 });
-app.listen(port, async () => {
-    console.log(`Backend listening on http://localhost:${port}`);
-    console.log(`API base URL: ${database_1.baseUrl}/api`);
-    try {
-        await (0, database_1.default)();
-    }
-    catch (error) {
-        console.error('Database connection failed:', error);
-    }
-});
+const Leaderboard = mongoose_1.default.models.Leaderboard || mongoose_1.default.model('Leaderboard', leaderboardSchema);
+exports.default = Leaderboard;
