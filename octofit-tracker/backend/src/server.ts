@@ -5,7 +5,12 @@ import activitiesRouter from './routes/activities'
 import leaderboardRouter from './routes/leaderboard'
 import workoutsRouter from './routes/workouts'
 import connectDatabase from './config/database'
-import { baseUrl, port } from './config/api'
+import { baseUrl, port, codespaceName } from './config/api'
+
+// API Base URL Configuration
+// When CODESPACE_NAME is available, the API will be accessible at:
+// https://$CODESPACE_NAME-8000.app.github.dev/api
+// Otherwise falls back to localhost:8000/api
 
 const app = express()
 
@@ -23,6 +28,9 @@ app.get('/', (req, res) => {
 app.listen(port, async () => {
   console.log(`Backend listening on http://localhost:${port}`)
   console.log(`API base URL: ${baseUrl}/api`)
+  if (codespaceName) {
+    console.log(`Codespaces environment detected: ${codespaceName}`)
+  }
 
   try {
     await connectDatabase()
