@@ -36,3 +36,4 @@ app.listen(port, async () => {
     console.error('Failed to connect to MongoDB:', error)
   }
 })
+
