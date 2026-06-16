@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react'
 import { buildApiUrl, normalizeApiResponse } from '../lib/api'
 
-interface Workout {
-  _id?: string
-  name?: string
-  description?: string
-  difficulty?: string
-  exercises?: string[]
-}
-
 function Workouts() {
-  const [workouts, setWorkouts] = useState<Workout[]>([])
+  const [workouts, setWorkouts] = useState([])
   const [message, setMessage] = useState('Loading workouts...')
 
   useEffect(() => {
     fetch(buildApiUrl('workouts'))
       .then((res) => res.json())
       .then((data) => {
-        const normalized = normalizeApiResponse<Workout>(data, 'workouts')
+        const normalized = normalizeApiResponse(data, 'workouts')
         setWorkouts(normalized)
         if (normalized.length === 0) {
           setMessage('No workouts found.')

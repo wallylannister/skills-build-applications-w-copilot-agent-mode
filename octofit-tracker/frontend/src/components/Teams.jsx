@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react'
 import { buildApiUrl, normalizeApiResponse } from '../lib/api'
 
-interface Team {
-  _id?: string
-  name?: string
-  description?: string
-  memberIds?: string[]
-  createdAt?: string
-}
-
 function Teams() {
-  const [teams, setTeams] = useState<Team[]>([])
+  const [teams, setTeams] = useState([])
   const [message, setMessage] = useState('Loading teams...')
 
   useEffect(() => {
     fetch(buildApiUrl('teams'))
       .then((res) => res.json())
       .then((data) => {
-        const normalized = normalizeApiResponse<Team>(data, 'teams')
+        const normalized = normalizeApiResponse(data, 'teams')
         setTeams(normalized)
         if (normalized.length === 0) {
           setMessage('No teams found.')

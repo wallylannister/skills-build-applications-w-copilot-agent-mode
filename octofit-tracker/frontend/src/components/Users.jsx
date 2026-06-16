@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react'
 import { buildApiUrl, normalizeApiResponse } from '../lib/api'
 
-interface User {
-  _id?: string
-  name?: string
-  email?: string
-  teamId?: string
-  joinedAt?: string
-}
-
 function Users() {
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState([])
   const [message, setMessage] = useState('Loading users...')
 
   useEffect(() => {
     fetch(buildApiUrl('users'))
       .then((res) => res.json())
       .then((data) => {
-        const normalized = normalizeApiResponse<User>(data, 'users')
+        const normalized = normalizeApiResponse(data, 'users')
         setUsers(normalized)
         if (normalized.length === 0) {
           setMessage('No users found.')

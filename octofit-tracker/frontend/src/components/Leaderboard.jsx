@@ -1,23 +1,15 @@
 import { useEffect, useState } from 'react'
 import { buildApiUrl, normalizeApiResponse } from '../lib/api'
 
-interface LeaderboardEntry {
-  userId?: string
-  name?: string
-  totalCalories?: number
-  totalDuration?: number
-  activityCount?: number
-}
-
 function Leaderboard() {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const [leaderboard, setLeaderboard] = useState([])
   const [message, setMessage] = useState('Loading leaderboard...')
 
   useEffect(() => {
     fetch(buildApiUrl('leaderboard'))
       .then((res) => res.json())
       .then((data) => {
-        const normalized = normalizeApiResponse<LeaderboardEntry>(data, 'leaderboard')
+        const normalized = normalizeApiResponse(data, 'leaderboard')
         setLeaderboard(normalized)
         if (normalized.length === 0) {
           setMessage('No leaderboard data available.')
