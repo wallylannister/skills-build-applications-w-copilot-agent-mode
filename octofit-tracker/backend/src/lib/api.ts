@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from './api'
+// API helper utilities for backend and frontend consumption
 
-interface FetchOptions extends RequestInit {
+export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>
 }
 
@@ -9,10 +9,11 @@ interface FetchOptions extends RequestInit {
  * Automatically uses the correct base URL (Codespaces or localhost)
  */
 export const fetchAPI = async <T = any>(
+  baseUrl: string,
   endpoint: string,
   options: FetchOptions = {}
 ): Promise<T> => {
-  const url = endpoint.startsWith('http') ? endpoint : `${API_ENDPOINTS.users.replace('/api/users', '')}${endpoint}`
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`
   
   const response = await fetch(url, {
     headers: {
@@ -32,24 +33,24 @@ export const fetchAPI = async <T = any>(
 /**
  * Fetch users from the API
  */
-export const fetchUsers = () => fetchAPI('/api/users')
+export const fetchUsers = (baseUrl: string) => fetchAPI(baseUrl, '/api/users')
 
 /**
  * Fetch activities from the API
  */
-export const fetchActivities = () => fetchAPI('/api/activities')
+export const fetchActivities = (baseUrl: string) => fetchAPI(baseUrl, '/api/activities')
 
 /**
  * Fetch teams from the API
  */
-export const fetchTeams = () => fetchAPI('/api/teams')
+export const fetchTeams = (baseUrl: string) => fetchAPI(baseUrl, '/api/teams')
 
 /**
  * Fetch leaderboard from the API
  */
-export const fetchLeaderboard = () => fetchAPI('/api/leaderboard')
+export const fetchLeaderboard = (baseUrl: string) => fetchAPI(baseUrl, '/api/leaderboard')
 
 /**
  * Fetch workouts from the API
  */
-export const fetchWorkouts = () => fetchAPI('/api/workouts')
+export const fetchWorkouts = (baseUrl: string) => fetchAPI(baseUrl, '/api/workouts')
