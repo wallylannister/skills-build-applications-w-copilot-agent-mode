@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { buildApiUrl, normalizeApiResponse } from '../lib/api'
 
+// Uses dynamic Codespaces-aware endpoint such as:
+// https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [message, setMessage] = useState('Loading workouts...')
